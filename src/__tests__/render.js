@@ -87,3 +87,28 @@ test('renders options.wrapper around node', () => {
 </div>
 `)
 })
+
+test('provides options.wrapperProps to options.wrapper', () => {
+  const WrapperComponent = ({children, testProp}) => (
+    <div data-testid="wrapper" id={testProp}>
+      {children}
+    </div>
+  )
+
+  const {container, getByTestId} = render(<div data-testid="inner" />, {
+    wrapper: WrapperComponent,
+    wrapperProps: {testProp: 'prop'},
+  })
+
+  expect(getByTestId('wrapper')).toBeInTheDocument()
+  expect(container.firstChild).toMatchInlineSnapshot(`
+<div
+  data-testid="wrapper"
+  id="prop"
+>
+  <div
+    data-testid="inner"
+  />
+</div>
+`)
+})
